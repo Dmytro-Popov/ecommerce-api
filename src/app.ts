@@ -3,11 +3,14 @@ import express from 'express';
 import cors from 'cors';
 import { connectDB } from './db/index.js';
 import categoryRoutes from './routes/categoryRoutes.js';
+import productRoutes from './routes/productRoutes.js';
+
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use('/categories', categoryRoutes);
+app.use('/products', productRoutes);
 
 const port = process.env.PORT || 3000;
 
