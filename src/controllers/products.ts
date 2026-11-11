@@ -1,6 +1,7 @@
 import type { Request, Response } from 'express'
 import { Product } from '../models/Product.js'
 import { Category } from '../models/Category.js'
+import { HttpError } from '../middleware/index.js'
 
 async function categoryExists(categoryId: string): Promise<boolean> {
   return (await Category.exists({ _id: categoryId })) !== null
@@ -27,7 +28,7 @@ export async function getProductById(req: Request, res: Response) {
   const { id } = req.params
   const product = await Product.findById(id)
   if (!product) {
-    return res.status(404).json({ message: 'Product not found' })
+    throw new HttpError(404, 'Category not found')
   }
   res.json(product)
 }
@@ -45,7 +46,7 @@ export async function updateProduct(req: Request, res: Response) {
     runValidators: true,
   })
   if (!product) {
-    return res.status(404).json({ message: 'Product not found' })
+    throw new HttpError(404, 'Category not found')
   }
   res.json(product)
 }
@@ -54,7 +55,7 @@ export async function deleteProduct(req: Request, res: Response) {
   const { id } = req.params
   const product = await Product.findByIdAndDelete(id)
   if (!product) {
-    return res.status(404).json({ message: 'Product not found' })
+    throw new HttpError(404, 'Category not found')
   }
   res.status(204).send()
 }
